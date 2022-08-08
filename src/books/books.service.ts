@@ -3,6 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Book} from "./books.entity";
 import {Repository} from "typeorm";
 import {CreateBookDto} from "./dto/create-book.dto";
+import {UpdateBookDto} from "./dto/update-book.dto";
 
 @Injectable()
 export class BooksService {
@@ -20,4 +21,12 @@ export class BooksService {
         return await this.bookRepository.find({relations: {author: true},
         });
     }
+
+    async removeBook(id) {
+        return await this.bookRepository.delete(id);
+        };
+
+    async updateBook(id, updateBookDto: UpdateBookDto) {
+        return await this.bookRepository.update(id, updateBookDto);
+    };
 }
