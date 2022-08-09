@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
 import {ApiProperty} from "@nestjs/swagger";
 import {Author} from "../authors/authors.entity";
 
@@ -15,9 +15,9 @@ export class Book {
 
     @ApiProperty({example: 'Its a very nice book', description: 'book description'})
     @Column()
-    description: string
+    description: string;
 
     @ApiProperty({example: 'Tolstoy', description: 'Author name', type: () => Author})
-    @ManyToOne(() => Author, (author) => author.book)
-    author: Author
+    @ManyToOne(() => Author, (author) => author.book, {onDelete: "CASCADE"})
+    author: Author;
 }

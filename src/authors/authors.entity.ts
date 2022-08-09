@@ -1,7 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 import {ApiProperty} from "@nestjs/swagger";
 import {Book} from "../books/books.entity";
-import {BooksService} from "../books/books.service";
 
 
 @Entity()
@@ -18,8 +17,12 @@ export class Author {
     @Column()
     lastName: string
 
+    @ApiProperty({example: 'qaz', description: 'complex password'})
+    @Column({default: 'cool'})
+    status: string
+
     @ApiProperty({example: 'War and Piece', description: 'Book name', type: () => Book})
-    @OneToMany(() => Book, (book) => book.author)
+    @OneToMany(() => Book, (book) => book.author, {onDelete: "CASCADE"})
     book: Book[]
 
 }

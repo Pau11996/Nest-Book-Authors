@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Patch, Post, Put, Req} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {BooksService} from "./books.service";
 import {Author} from "../authors/authors.entity";
@@ -14,7 +14,7 @@ export class BooksController {
     @ApiOperation({summary: 'Book creation'})
     @ApiResponse({status: 201, type: Book})
     @Post('/books')
-    create(@Body('/books') bookDto: CreateBookDto) {
+    create(@Body() bookDto: CreateBookDto) {
         return this.booksService.createBook(bookDto);
     }
 
@@ -22,7 +22,30 @@ export class BooksController {
     @ApiResponse({status: 200, type: Author})
     @Get('/books')
     getAll() {
-        return this.booksService.getAllAuthors();
+        return this.booksService.getAllBooks();
+    }
+
+    @ApiOperation({summary: 'Get all books'})
+    @ApiResponse({status: 200, type: Author})
+    @Get('/books/:id')
+    getOneBook(@Param('id') id: string) {
+        return this.booksService.getOneBook(id);
+    }
+
+    @ApiOperation({summary: 'Get all books'})
+    @ApiResponse({status: 200, type: Author})
+    @Get('/authors/:autid/books')
+    getAuthorsBooks(@Req() req: Request) {
+        return this.booksService.getAuthorsBooks(req);
+    }
+
+    @ApiOperation({summary: 'Get all books'})
+    @ApiResponse({status: 200, type: Author})
+    @Get('/authors/:AUTHOR_ID/books/:id')
+        getOneAuthorBook(@Param('id') id: string, @Param('AUTHOR_ID') authorId: string) {
+        console.log(id)
+        console.log(authorId)
+        return this.booksService.getOneAuthorBook(id, authorId);
     }
 
     @Delete('/books/:id')

@@ -17,8 +17,24 @@ export class BooksService {
         return book;
     }
 
-    async getAllAuthors() {
+    async getAllBooks() {
         return await this.bookRepository.find({relations: {author: true},
+        });
+    }
+
+    async getOneBook(id) {
+        return await this.bookRepository.findOne({where: {id: id}});
+    }
+
+    async getAuthorsBooks(req) {
+        return await this.bookRepository.find({where: {author: req.id}});
+    }
+
+    async getOneAuthorBook(id, authorId) {
+        return await this.bookRepository.find({where: {
+            id: id, author:
+                    {id: authorId}
+            },
         });
     }
 
